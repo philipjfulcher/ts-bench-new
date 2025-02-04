@@ -4,12 +4,12 @@ assignment-rules:
       - linux-medium-js
   - target: build
     runs-on:
-      - linux-large-js
+      - linux-extra-large-js
   - project: huge-lib
     target: typecheck
     runs-on:
-      - linux-large-js
+      - linux-extra-large-js
   - project: demo
     target: typecheck
     runs-on:
-      - linux-large-js
+      - linux-extra-large-js

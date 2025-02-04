@@ -1,4 +1,7 @@
 assignment-rules:
+  - target: typecheck
+    runs-on:
+      - linux-medium-js
   - project: demo
     target: typecheck
     runs-on:

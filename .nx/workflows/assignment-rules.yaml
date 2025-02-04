@@ -2,15 +2,14 @@ assignment-rules:
   - target: typecheck
     runs-on:
       - linux-medium-js
-  - project: demo
+  - target: build
+    runs-on:
+      - linux-large-js
+  - project: huge-lib
     target: typecheck
     runs-on:
       - linux-large-js
   - project: demo
-    target: build
-    runs-on:
-      - linux-large-js
-  - project: huge-lib
     target: typecheck
     runs-on:
       - linux-large-js

@@ -1,0 +1,7 @@
+distribute-on:
+  default: 4 linux-medium-js, 1 linux-extra-large-js
+assignment-rules:
+  - project: demo
+    target: build
+    runs-on:
+      - linux-extra-large-js

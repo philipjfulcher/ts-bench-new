@@ -1,18 +1,18 @@
 distribute-on:
-  default: 4 linux-medium-js, 1 linux-extra-large-js
+  default: 4 linux-medium-js, 1 linux-extra-large-plus-js
 assignment-rules:
   - project: demo
     target: build
     runs-on:
-      - linux-extra-large-js
+      - linux-extra-large-plus-js
   - project: demo
     target: typecheck
     runs-on:
-      - linux-extra-large-js
+      - linux-extra-large-plus-js
   - project: huge-lib
     target: typecheck
     runs-on:
-      - linux-extra-large-js
+      - linux-extra-large-plus-js
   - target: typecheck
     runs-on:
       - linux-medium-js

@@ -14,36 +14,68 @@ env:
   NODE_OPTIONS: "--max-old-space-size=32768"
 
 jobs:
-  small-jobs:
-    env:
-      NX_CI_EXECUTION_ENV: small
+  main:
+    name: Main Job
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: npx nx-cloud start-ci-run --distribute-on="4 linux-medium-js" --with-env-vars="NODE_OPTIONS"
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
       - run: npm ci --legacy-peer-deps
       - uses: nrwl/nx-set-shas@v4
-      - run: npx nx run-many -t typecheck build --exclude demo huge-lib --parallel 2
-      
-  big-jobs:
-    env:
-      NX_CI_EXECUTION_ENV: big
-    runs-on: ubuntu-latest
+      - run: npx nx-cloud start-ci-run --distribute-on="manual" --assignment-rules=".nx/workflows/assignment-rules.yaml"
+      - run: npx nx run-many -t typecheck build
+
+  medium-agents:
+    name: Agents ${{ matrix.agent }}
+    runs-on:
+      group: medium-agents
+    strategy:
+      matrix:
+        agent: [1, 2, 3, 4]
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - run: npx nx-cloud start-ci-run --distribute-on="1 linux-extra-large-plus-js" --with-env-vars="NODE_OPTIONS"
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
-      - run: npm ci --legacy-peer-deps
-      - uses: nrwl/nx-set-shas@v4
-      - run: npx nx run-many -t typecheck build -p demo huge-lib --parallel 2
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Start Agent ${{ matrix.agent }}
+        run: npx nx-cloud start-agent
+        env:
+          NX_AGENT_NAME: ${{ matrix.agent }}
+          NX_AGENT_LAUNCH_TEMPLATE: 'linux-medium' # This value needs to match one of the 'runs-on' values defined in the assignment rules
+
+  large-agents:
+    name: Agents ${{ matrix.agent }}
+    runs-on:
+      group: large-agents
+    strategy:
+      matrix:
+        agent: [1]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Start Agent ${{ matrix.agent }}
+        run: npx nx-cloud start-agent
+        env:
+          NX_AGENT_NAME: ${{ matrix.agent }}
+          NX_AGENT_LAUNCH_TEMPLATE: 'linux-extra-large-plus' # This value needs to match one of the 'runs-on' values defined in the assignment rules

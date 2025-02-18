@@ -1,0 +1,16 @@
+assignment-rules:
+  - projects:
+      - demo
+      - huge-lib
+    targets:
+      - build
+      - typecheck
+    run-on:
+      - agent: linux-extra-large-plus
+        parallelism: 2
+
+  - targets:
+      - typecheck
+    run-on:
+      - agent: linux-medium
+        parallelism: 2

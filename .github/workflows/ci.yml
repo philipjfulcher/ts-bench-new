@@ -14,17 +14,36 @@ env:
   NODE_OPTIONS: "--max-old-space-size=32768"
 
 jobs:
-  main:
+  small-jobs:
+    env:
+      NX_CI_EXECUTION_ENV: small
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - run: npx nx-cloud start-ci-run --distribute-on=".nx/workflows/distribution-config.yaml" --with-env-vars="NODE_OPTIONS"
+      - run: npx nx-cloud start-ci-run --distribute-on="4 linux-medium-js" --with-env-vars="NODE_OPTIONS"
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
       - run: npm ci --legacy-peer-deps
       - uses: nrwl/nx-set-shas@v4
-      - run: npx nx run-many -t typecheck build
+      - run: npx nx run-many -t typecheck build --exclude demo huge-lib --parallel 2
+      
+  big-jobs:
+    env:
+      NX_CI_EXECUTION_ENV: big
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: npx nx-cloud start-ci-run --distribute-on="1 linux-extra-large-plus-js" --with-env-vars="NODE_OPTIONS"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci --legacy-peer-deps
+      - uses: nrwl/nx-set-shas@v4
+      - run: npx nx run-many -t typecheck build -p demo huge-lib --parallel 2

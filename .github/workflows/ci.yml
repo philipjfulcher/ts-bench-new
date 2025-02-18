@@ -31,9 +31,8 @@ jobs:
       - run: npx nx run-many -t typecheck build
 
   medium-agents:
-    name: Agents ${{ matrix.agent }}
-    runs-on:
-      group: medium-agents
+    name: Medium Agents ${{ matrix.agent }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         agent: [1, 2, 3, 4]
@@ -55,9 +54,8 @@ jobs:
           NX_AGENT_LAUNCH_TEMPLATE: 'linux-medium' # This value needs to match one of the 'runs-on' values defined in the assignment rules
 
   large-agents:
-    name: Agents ${{ matrix.agent }}
-    runs-on:
-      group: large-agents
+    name: Large Agents ${{ matrix.agent }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         agent: [1]

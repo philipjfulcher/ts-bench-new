@@ -27,53 +27,53 @@ jobs:
           cache: "npm"
       - run: npm ci --legacy-peer-deps
       - uses: nrwl/nx-set-shas@v4
-      - run: npx nx-cloud start-ci-run --distribute-on="manual" --assignment-rules=".nx/workflows/assignment-rules.yaml"
+      - run: npx nx-cloud start-ci-run --distribute-on=".nx/workflows/distribution-config.yaml" --assignment-rules=".nx/workflows/assignment-rules.yaml"
       - run: npx nx run-many -t typecheck build
 
-  medium-agents:
-    name: Medium Agents ${{ matrix.agent }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        agent: [1, 2, 3, 4]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # medium-agents:
+  #   name: Medium Agents ${{ matrix.agent }}
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       agent: [1, 2, 3, 4]
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #         cache: 'npm'
+  #     - name: Install dependencies
+  #       run: npm ci --legacy-peer-deps
 
-      - name: Start Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent
-        env:
-          NX_AGENT_NAME: ${{ matrix.agent }}
-          NX_AGENT_LAUNCH_TEMPLATE: 'linux-medium' # This value needs to match one of the 'runs-on' values defined in the assignment rules
+  #     - name: Start Agent ${{ matrix.agent }}
+  #       run: npx nx-cloud start-agent
+  #       env:
+  #         NX_AGENT_NAME: ${{ matrix.agent }}
+  #         NX_AGENT_LAUNCH_TEMPLATE: 'linux-medium' # This value needs to match one of the 'runs-on' values defined in the assignment rules
 
-  large-agents:
-    name: Large Agents ${{ matrix.agent }}
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        agent: [1]
+  # large-agents:
+  #   name: Large Agents ${{ matrix.agent }}
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       agent: [1]
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #         cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+  #     - name: Install dependencies
+  #       run: npm ci --legacy-peer-deps
 
-      - name: Start Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent
-        env:
-          NX_AGENT_NAME: ${{ matrix.agent }}
-          NX_AGENT_LAUNCH_TEMPLATE: 'linux-extra-large-plus' # This value needs to match one of the 'runs-on' values defined in the assignment rules
+  #     - name: Start Agent ${{ matrix.agent }}
+  #       run: npx nx-cloud start-agent
+  #       env:
+  #         NX_AGENT_NAME: ${{ matrix.agent }}
+  #         NX_AGENT_LAUNCH_TEMPLATE: 'linux-extra-large-plus' # This value needs to match one of the 'runs-on' values defined in the assignment rules

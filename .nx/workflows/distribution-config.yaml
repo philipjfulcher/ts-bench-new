@@ -1,0 +1,19 @@
+distribute-on:
+  default: 4 linux-medium-js, 1 linux-extra-large-plus-js
+
+assignment-rules:
+  - projects:
+      - demo
+      - huge-lib
+    targets:
+      - build
+      - typecheck
+    run-on:
+      - agent: linux-extra-large-plus-js
+        parallelism: 2
+
+  - targets:
+      - typecheck
+    run-on:
+      - agent: linux-medium-js
+        parallelism: 2

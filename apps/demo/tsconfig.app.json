@@ -40,12 +40,6 @@
     "path": "../../packages/huge-lib/tsconfig.lib.json"
   },
   {
-    "path": "../../packages/nested-1-2/tsconfig.lib.json"
-  },
-  {
-    "path": "../../packages/nested-1-1/tsconfig.lib.json"
-  },
-  {
     "path": "../../packages/nested-1/tsconfig.lib.json"
   },
   {

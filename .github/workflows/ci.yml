@@ -28,7 +28,7 @@ jobs:
       - run: npm ci --legacy-peer-deps
       - uses: nrwl/nx-set-shas@v4
       - run: npx nx-cloud start-ci-run --distribute-on=".nx/workflows/distribution-config.yaml" --assignment-rules=".nx/workflows/assignment-rules.yaml"
-      - run: npx nx run-many -t typecheck build
+      - run: NODE_OPTIONS="--max-old-space-size=8192" npx nx run-many -t typecheck build
 
   # medium-agents:
   #   name: Medium Agents ${{ matrix.agent }}
